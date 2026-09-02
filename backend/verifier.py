@@ -32,8 +32,21 @@ def verify_adjustment(order_id, proposed_adjustment_amount):
     # tolerance
     is_verified = abs(expected_net - adjusted_observed_net) <= 1.0
     
+    status = "PASS" if is_verified else "FAIL"
+    if proposed_adjustment_amount == 0 and abs(expected_net - observed_net) > 1.0:
+        # If no adjustment proposed but it doesn't match, or we can't verify
+        status = "INCONCLUSIVE"
+        
     conn.close()
-    return is_verified, expected_net, adjusted_observed_net
+    
+    return {
+        "status": status,
+        "expected": float(expected_net),
+        "observed": float(observed_net),
+        "difference": float(expected_net - observed_net),
+        "calculation": f"{float(observed_net)} + {float(proposed_adjustment_amount)} = {float(adjusted_observed_net)} (Expected: {float(expected_net)})",
+        "reason": f"Verification {'passed' if is_verified else 'failed'} with adjustment {float(proposed_adjustment_amount)}"
+    }
 
 if __name__ == "__main__":
     # Test block
