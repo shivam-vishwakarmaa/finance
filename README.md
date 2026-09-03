@@ -62,4 +62,4 @@ npm run dev
 Visit `http://localhost:5173` to view the Controller dashboard.
 
 ---
-*Built for Razorpay AI Buildathon 2026 — Track 04: AI Finance Controller*
+
