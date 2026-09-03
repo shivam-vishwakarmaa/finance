@@ -115,6 +115,22 @@ def approve_exception(exception_id: str):
         raise HTTPException(status_code=404, detail="Exception not found")
         
     conn.execute("UPDATE exceptions SET status = 'HUMAN_APPROVED' WHERE exception_id = ?", (exception_id,))
+    
+    # Rule Learning: Create a rule for this category to auto-resolve similar future anomalies
+    cat = exc['root_cause_category']
+    if cat and cat != 'AMBIGUOUS' and cat != 'UNKNOWN' and exc['confidence'] >= 0.90:
+        import uuid
+        rule_id = f"RUL-{uuid.uuid4().hex[:8].upper()}"
+        max_impact = exc['financial_impact'] * 1.25 # 25% tolerance margin
+        
+        # Check if rule exists
+        existing = conn.execute("SELECT * FROM resolution_rules WHERE category = ?", (cat,)).fetchone()
+        if existing:
+            if max_impact > existing['max_impact']:
+                conn.execute("UPDATE resolution_rules SET max_impact = ? WHERE category = ?", (max_impact, cat))
+        else:
+            conn.execute("INSERT INTO resolution_rules (rule_id, category, max_impact) VALUES (?, ?, ?)", (rule_id, cat, max_impact))
+    
     conn.commit()
     conn.close()
     

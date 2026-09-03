@@ -10,6 +10,7 @@ function App() {
   const [dashboardData, setDashboardData] = useState<any>(null)
   const [clusters, setClusters] = useState<any[]>([])
   const [exceptions, setExceptions] = useState<any[]>([])
+  const [auditEvents, setAuditEvents] = useState<any[]>([])
   
   useEffect(() => {
     fetch('http://localhost:8000/api/dashboard')
@@ -23,6 +24,10 @@ function App() {
     fetch('http://localhost:8000/api/exceptions')
       .then(r => r.json())
       .then(data => setExceptions(data))
+      
+    fetch('http://localhost:8000/api/audit')
+      .then(r => r.json())
+      .then(data => setAuditEvents(data))
   }, [])
 
   const navigateToException = (excId: string) => {
@@ -398,6 +403,63 @@ function App() {
     )
   }
 
+  const AuditView = () => (
+    <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-8 animate-fade-in relative z-10">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-white tracking-tight">Audit Trail</h1>
+          <p className="text-slate-400 mt-2">Immutable log of all automated and manual governance actions.</p>
+        </div>
+        <button onClick={() => {
+            fetch('http://localhost:8000/api/audit').then(r => r.json()).then(data => setAuditEvents(data))
+          }} className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">
+          Refresh Log
+        </button>
+      </div>
+
+      <div className="glass-card rounded-3xl overflow-hidden border border-white/10">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-white/5 border-b border-white/10">
+              <tr>
+                <th className="p-5 font-semibold text-slate-300">Timestamp</th>
+                <th className="p-5 font-semibold text-slate-300">Event ID</th>
+                <th className="p-5 font-semibold text-slate-300">Record Ref</th>
+                <th className="p-5 font-semibold text-slate-300">Action</th>
+                <th className="p-5 font-semibold text-slate-300">Confidence</th>
+                <th className="p-5 font-semibold text-slate-300">Hash (SHA-256)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {auditEvents.map((e: any) => (
+                <tr key={e.event_id} className="hover:bg-white/5 transition-colors">
+                  <td className="p-5 text-slate-400 text-xs font-mono">{new Date(e.created_at).toLocaleString()}</td>
+                  <td className="p-5 font-medium text-white">{e.event_id}</td>
+                  <td className="p-5 text-primary cursor-pointer hover:underline" onClick={() => navigateToException(e.record_id)}>{e.record_id}</td>
+                  <td className="p-5">
+                    <span className={`text-[10px] uppercase px-2 py-1 rounded-full font-bold tracking-wide
+                      ${e.action.includes('APPROVE') || e.action.includes('SAFE') ? 'bg-success/10 text-success border border-success/20' : 
+                        e.action.includes('REJECT') ? 'bg-danger/10 text-danger border border-danger/20' : 
+                        'bg-warning/10 text-warning border border-warning/20'}`}>
+                      {e.action.replace(/_/g, ' ')}
+                    </span>
+                  </td>
+                  <td className="p-5 text-slate-300 font-mono">{(e.confidence * 100).toFixed(1)}%</td>
+                  <td className="p-5 text-slate-500 font-mono text-[10px] truncate max-w-[150px]" title={e.record_hash}>{e.record_hash}</td>
+                </tr>
+              ))}
+              {auditEvents.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="p-10 text-center text-slate-500">No audit events recorded yet.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-background selection:bg-primary/30 text-slate-200 relative overflow-hidden pb-20 font-sans">
       {/* Dynamic Background */}
@@ -408,13 +470,18 @@ function App() {
       </div>
 
       <header className="border-b border-white/5 bg-background/50 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-[90rem] mx-auto h-20 flex items-center px-6 md:px-10">
+        <div className="max-w-[90rem] mx-auto h-20 flex items-center justify-between px-6 md:px-10">
            <div className="flex items-center gap-3 font-extrabold text-2xl tracking-tight cursor-pointer group" onClick={() => setCurrentView('dashboard')}>
              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-cyan-500 flex items-center justify-center text-white shadow-[0_0_15px_rgba(99,102,241,0.5)] group-hover:shadow-[0_0_25px_rgba(99,102,241,0.7)] transition-all duration-300">
                <Activity className="w-6 h-6" />
              </div>
              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">FinEx</span>
            </div>
+           
+           <nav className="flex items-center gap-6">
+             <button onClick={() => setCurrentView('dashboard')} className={`text-sm font-semibold transition-colors ${currentView === 'dashboard' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Dashboard</button>
+             <button onClick={() => setCurrentView('audit')} className={`text-sm font-semibold transition-colors ${currentView === 'audit' ? 'text-white' : 'text-slate-400 hover:text-white'}`}>Audit Trail</button>
+           </nav>
         </div>
       </header>
       
@@ -422,6 +489,7 @@ function App() {
         {currentView === 'dashboard' && <DashboardView />}
         {currentView === 'exception' && <ExceptionView />}
         {currentView === 'cluster' && <ClusterView />}
+        {currentView === 'audit' && <AuditView />}
       </main>
     </div>
   )

@@ -6,14 +6,28 @@ def calculate_materiality(financial_impact, confidence):
     return financial_impact
 
 def apply_governance(ai_hypothesis, verification_result):
+    import sqlite3
     confidence = ai_hypothesis.get('confidence', 0.0)
     impact = abs(ai_hypothesis.get('proposed_adjustment_amount', 0.0))
     status = verification_result.get('status', 'INCONCLUSIVE')
+    category = ai_hypothesis.get('root_cause_category')
     
     if status == 'PASS' and confidence >= 0.95 and impact <= 5000:
         return "SAFE_AUTO_RESOLUTION"
         
-    if status == 'INCONCLUSIVE' or confidence < 0.70 or ai_hypothesis.get('root_cause_category') == 'AMBIGUOUS':
+    # Tier 3: Apply Rule Learning
+    if status == 'PASS' and category and confidence >= 0.80:
+        try:
+            conn = sqlite3.connect("finex.db")
+            conn.row_factory = sqlite3.Row
+            rule = conn.execute("SELECT * FROM resolution_rules WHERE category = ?", (category,)).fetchone()
+            conn.close()
+            if rule and impact <= rule['max_impact']:
+                return "SAFE_AUTO_RESOLUTION"
+        except Exception:
+            pass
+        
+    if status == 'INCONCLUSIVE' or confidence < 0.70 or category == 'AMBIGUOUS':
         return "UNRESOLVED"
         
     return "HUMAN_APPROVAL"

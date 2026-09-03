@@ -2,54 +2,89 @@
   {
     "exception_id": null,
     "order_id": "ORD-1000",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 7562,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 7250,
     "affected_records": [
       "ORD-1000",
-      "SET-20000"
+      "SET-20000-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1006",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 2796,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 2625,
     "affected_records": [
       "ORD-1006",
-      "SET-20006"
+      "SET-20006-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1007",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 65,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1007",
-      "SET-20007"
+      "SET-20007-A",
+      "SET-20007-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1012",
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
+    "affected_records": [
+      "ORD-1012",
+      "SET-20012-A",
+      "SET-20012-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1014",
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
+    "affected_records": [
+      "ORD-1014",
+      "SET-20014-A",
+      "SET-20014-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1015",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1855,
     "affected_records": [
       "ORD-1015",
-      "SET-20015-A",
-      "SET-20015-B"
+      "SET-20015"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1017",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 43,
+    "affected_records": [
+      "ORD-1017",
+      "SET-20017"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1019",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 51,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 1436,
     "affected_records": [
       "ORD-1019",
       "SET-20019"
@@ -58,21 +93,20 @@
   {
     "exception_id": null,
     "order_id": "ORD-1020",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 8738,
     "affected_records": [
       "ORD-1020",
-      "SET-20020-A",
-      "SET-20020-B"
+      "SET-20020"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1021",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 70,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 1431,
     "affected_records": [
       "ORD-1021",
       "SET-20021"
@@ -81,33 +115,31 @@
   {
     "exception_id": null,
     "order_id": "ORD-1025",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 1151,
     "affected_records": [
       "ORD-1025",
-      "SET-20025-A",
-      "SET-20025-B"
+      "SET-20025"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1026",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1570,
     "affected_records": [
       "ORD-1026",
-      "SET-20026-A",
-      "SET-20026-B"
+      "SET-20026"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1028",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 59,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 5647,
     "affected_records": [
       "ORD-1028",
       "SET-20028"
@@ -116,9 +148,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1029",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 5415,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 124,
     "affected_records": [
       "ORD-1029",
       "SET-20029"
@@ -126,22 +158,32 @@
   },
   {
     "exception_id": null,
+    "order_id": "ORD-1030",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 65,
+    "affected_records": [
+      "ORD-1030",
+      "SET-20030"
+    ]
+  },
+  {
+    "exception_id": null,
     "order_id": "ORD-1034",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -15495,
     "affected_records": [
       "ORD-1034",
-      "SET-20034-A",
-      "SET-20034-B"
+      "SET-20034-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1036",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 628,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 260,
     "affected_records": [
       "ORD-1036",
       "SET-20036"
@@ -150,48 +192,79 @@
   {
     "exception_id": null,
     "order_id": "ORD-1038",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -11958,
     "affected_records": [
       "ORD-1038",
-      "SET-20038-A",
-      "SET-20038-B"
+      "SET-20038-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1041",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 81,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1041",
-      "SET-20041"
+      "SET-20041-A",
+      "SET-20041-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1043",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 8504,
     "affected_records": [
       "ORD-1043",
-      "SET-20043-A",
-      "SET-20043-B"
+      "SET-20043"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1044",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 81,
+    "affected_records": [
+      "ORD-1044",
+      "SET-20044"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1050",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1380,
     "affected_records": [
       "ORD-1050",
-      "SET-20050-A",
-      "SET-20050-B"
+      "SET-20050"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1051",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 25,
+    "affected_records": [
+      "ORD-1051",
+      "SET-20051"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1052",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 104,
+    "affected_records": [
+      "ORD-1052",
+      "SET-20052"
     ]
   },
   {
@@ -204,101 +277,122 @@
   {
     "exception_id": null,
     "order_id": "ORD-1057",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 53,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1057",
-      "SET-20057"
+      "SET-20057-A",
+      "SET-20057-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1058",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1871,
     "affected_records": [
       "ORD-1058",
-      "SET-20058-A",
-      "SET-20058-B"
+      "SET-20058"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1067",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 952,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 6752,
     "affected_records": [
       "ORD-1067",
-      "SET-20067"
+      "SET-20067-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1069",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 10012,
     "affected_records": [
       "ORD-1069",
-      "SET-20069-A",
-      "SET-20069-B"
+      "SET-20069"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1073",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 39,
+    "affected_records": [
+      "ORD-1073",
+      "SET-20073"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1074",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -8234,
     "affected_records": [
       "ORD-1074",
-      "SET-20074-A",
-      "SET-20074-B"
+      "SET-20074-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1075",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 57,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1075",
-      "SET-20075"
+      "SET-20075-A",
+      "SET-20075-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1077",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 27,
+    "affected_records": [
+      "ORD-1077",
+      "SET-20077"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1081",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 85,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1081",
-      "SET-20081"
+      "SET-20081-A",
+      "SET-20081-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1083",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1116,
     "affected_records": [
       "ORD-1083",
-      "SET-20083-A",
-      "SET-20083-B"
+      "SET-20083"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1088",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 11294,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 190,
     "affected_records": [
       "ORD-1088",
       "SET-20088"
@@ -307,9 +401,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1089",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 11376,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 653,
     "affected_records": [
       "ORD-1089",
       "SET-20089"
@@ -318,21 +412,20 @@
   {
     "exception_id": null,
     "order_id": "ORD-1092",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -14499,
     "affected_records": [
       "ORD-1092",
-      "SET-20092-A",
-      "SET-20092-B"
+      "SET-20092-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1094",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 60,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 900,
     "affected_records": [
       "ORD-1094",
       "SET-20094"
@@ -341,21 +434,20 @@
   {
     "exception_id": null,
     "order_id": "ORD-1096",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 7290,
     "affected_records": [
       "ORD-1096",
-      "SET-20096-A",
-      "SET-20096-B"
+      "SET-20096"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1099",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 88,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 11766,
     "affected_records": [
       "ORD-1099",
       "SET-20099"
@@ -364,9 +456,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1103",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 94,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 2684,
     "affected_records": [
       "ORD-1103",
       "SET-20103"
@@ -375,25 +467,23 @@
   {
     "exception_id": null,
     "order_id": "ORD-1104",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -9792,
     "affected_records": [
       "ORD-1104",
-      "SET-20104-A",
-      "SET-20104-B"
+      "SET-20104-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1105",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1973,
     "affected_records": [
       "ORD-1105",
-      "SET-20105-A",
-      "SET-20105-B"
+      "SET-20105"
     ]
   },
   {
@@ -401,7 +491,7 @@
     "order_id": "ORD-1106",
     "true_root_cause": "UNKNOWN",
     "true_category": "AMBIGUOUS",
-    "expected_difference": 55704,
+    "expected_difference": 71923,
     "affected_records": [
       "ORD-1106",
       "SET-20106"
@@ -410,81 +500,136 @@
   {
     "exception_id": null,
     "order_id": "ORD-1109",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1492,
     "affected_records": [
       "ORD-1109",
-      "SET-20109-A",
-      "SET-20109-B"
+      "SET-20109"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1112",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 53,
+    "affected_records": [
+      "ORD-1112",
+      "SET-20112"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1113",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 60,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1113",
-      "SET-20113"
+      "SET-20113-A",
+      "SET-20113-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1114",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 35,
+    "affected_records": [
+      "ORD-1114",
+      "SET-20114"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1116",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 78,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1116",
-      "SET-20116"
+      "SET-20116-A",
+      "SET-20116-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1117",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 57,
+    "affected_records": [
+      "ORD-1117",
+      "SET-20117"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1119",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 73,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1119",
-      "SET-20119"
+      "SET-20119-A",
+      "SET-20119-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1120",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1602,
     "affected_records": [
       "ORD-1120",
-      "SET-20120-A",
-      "SET-20120-B"
+      "SET-20120"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1121",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 4971,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 12078,
     "affected_records": [
       "ORD-1121",
-      "SET-20121"
+      "SET-20121-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1122",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -9089,
     "affected_records": [
       "ORD-1122",
-      "SET-20122-A",
-      "SET-20122-B"
+      "SET-20122-CB"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1123",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 67,
+    "affected_records": [
+      "ORD-1123",
+      "SET-20123"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1125",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 37,
+    "affected_records": [
+      "ORD-1125",
+      "SET-20125"
     ]
   },
   {
@@ -497,9 +642,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1128",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 38,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 944,
     "affected_records": [
       "ORD-1128",
       "SET-20128"
@@ -508,32 +653,43 @@
   {
     "exception_id": null,
     "order_id": "ORD-1131",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -4557,
     "affected_records": [
       "ORD-1131",
-      "SET-20131-A",
-      "SET-20131-B"
+      "SET-20131-CB"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1132",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 95,
+    "affected_records": [
+      "ORD-1132",
+      "SET-20132"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1133",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 26,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1133",
-      "SET-20133"
+      "SET-20133-A",
+      "SET-20133-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1134",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 1624,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 35,
     "affected_records": [
       "ORD-1134",
       "SET-20134"
@@ -549,9 +705,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1137",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 35,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 12857,
     "affected_records": [
       "ORD-1137",
       "SET-20137"
@@ -560,9 +716,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1139",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 8119,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 210,
     "affected_records": [
       "ORD-1139",
       "SET-20139"
@@ -571,9 +727,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1140",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 57,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 2374,
     "affected_records": [
       "ORD-1140",
       "SET-20140"
@@ -582,9 +738,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1142",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 100,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 10426,
     "affected_records": [
       "ORD-1142",
       "SET-20142"
@@ -592,44 +748,99 @@
   },
   {
     "exception_id": null,
+    "order_id": "ORD-1145",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 75,
+    "affected_records": [
+      "ORD-1145",
+      "SET-20145"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1146",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 89,
+    "affected_records": [
+      "ORD-1146",
+      "SET-20146"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1147",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 88,
+    "affected_records": [
+      "ORD-1147",
+      "SET-20147"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1150",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 75,
+    "affected_records": [
+      "ORD-1150",
+      "SET-20150"
+    ]
+  },
+  {
+    "exception_id": null,
     "order_id": "ORD-1153",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 2229,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 597,
     "affected_records": [
       "ORD-1153",
-      "SET-20153"
+      "SET-20153-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1154",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 100,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1154",
-      "SET-20154"
+      "SET-20154-A",
+      "SET-20154-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1157",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -11181,
     "affected_records": [
       "ORD-1157",
-      "SET-20157-A",
-      "SET-20157-B"
+      "SET-20157-CB"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1158",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 68,
+    "affected_records": [
+      "ORD-1158",
+      "SET-20158"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1160",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 5069,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 680,
     "affected_records": [
       "ORD-1160",
       "SET-20160"
@@ -637,33 +848,101 @@
   },
   {
     "exception_id": null,
-    "order_id": "ORD-1166",
+    "order_id": "ORD-1162",
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
+    "affected_records": [
+      "ORD-1162",
+      "SET-20162-A",
+      "SET-20162-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1164",
     "true_root_cause": "STALE_FEE_RATE",
     "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 75,
+    "expected_difference": 68,
+    "affected_records": [
+      "ORD-1164",
+      "SET-20164"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1166",
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1166",
-      "SET-20166"
+      "SET-20166-A",
+      "SET-20166-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1167",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 39,
+    "affected_records": [
+      "ORD-1167",
+      "SET-20167"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1169",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 43,
+    "affected_records": [
+      "ORD-1169",
+      "SET-20169"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1171",
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
+    "affected_records": [
+      "ORD-1171",
+      "SET-20171-A",
+      "SET-20171-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1177",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 43,
+    "affected_records": [
+      "ORD-1177",
+      "SET-20177"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1179",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -892,
     "affected_records": [
       "ORD-1179",
-      "SET-20179-A",
-      "SET-20179-B"
+      "SET-20179"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1180",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 67,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 12601,
     "affected_records": [
       "ORD-1180",
       "SET-20180"
@@ -672,20 +951,20 @@
   {
     "exception_id": null,
     "order_id": "ORD-1182",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 2147,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 4896,
     "affected_records": [
       "ORD-1182",
-      "SET-20182"
+      "SET-20182-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1183",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 43,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 4227,
     "affected_records": [
       "ORD-1183",
       "SET-20183"
@@ -693,10 +972,21 @@
   },
   {
     "exception_id": null,
-    "order_id": "ORD-1187",
+    "order_id": "ORD-1186",
     "true_root_cause": "STALE_FEE_RATE",
     "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 104,
+    "expected_difference": 48,
+    "affected_records": [
+      "ORD-1186",
+      "SET-20186"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1187",
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 14728,
     "affected_records": [
       "ORD-1187",
       "SET-20187"
@@ -705,53 +995,110 @@
   {
     "exception_id": null,
     "order_id": "ORD-1189",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 66,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1189",
-      "SET-20189"
+      "SET-20189-A",
+      "SET-20189-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1191",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 100,
+    "affected_records": [
+      "ORD-1191",
+      "SET-20191"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1193",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 25,
+    "affected_records": [
+      "ORD-1193",
+      "SET-20193"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1194",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 75,
+    "affected_records": [
+      "ORD-1194",
+      "SET-20194"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1196",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 79,
+    "affected_records": [
+      "ORD-1196",
+      "SET-20196"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1200",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 79,
+    "affected_records": [
+      "ORD-1200",
+      "SET-20200"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1202",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 46,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1202",
-      "SET-20202"
+      "SET-20202-A",
+      "SET-20202-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1205",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 11794,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 7869,
     "affected_records": [
       "ORD-1205",
-      "SET-20205"
+      "SET-20205-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1210",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 13671,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 2221,
     "affected_records": [
       "ORD-1210",
-      "SET-20210"
+      "SET-20210-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1211",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 9422,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 138,
     "affected_records": [
       "ORD-1211",
       "SET-20211"
@@ -760,65 +1107,66 @@
   {
     "exception_id": null,
     "order_id": "ORD-1213",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 26,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1213",
-      "SET-20213"
+      "SET-20213-A",
+      "SET-20213-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1214",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 12770,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 2374,
     "affected_records": [
       "ORD-1214",
-      "SET-20214"
+      "SET-20214-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1216",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -9937,
     "affected_records": [
       "ORD-1216",
-      "SET-20216-A",
-      "SET-20216-B"
+      "SET-20216-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1218",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 10298,
+    "true_root_cause": "SETTLED_TWICE",
+    "true_category": "DUPLICATE_SETTLEMENT",
+    "expected_difference": 5522,
     "affected_records": [
       "ORD-1218",
-      "SET-20218"
+      "SET-20218-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1219",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 50,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1219",
-      "SET-20219"
+      "SET-20219-A",
+      "SET-20219-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1221",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 78,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 9941,
     "affected_records": [
       "ORD-1221",
       "SET-20221"
@@ -827,32 +1175,32 @@
   {
     "exception_id": null,
     "order_id": "ORD-1222",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 76,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1222",
-      "SET-20222"
+      "SET-20222-A",
+      "SET-20222-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1224",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "SHORT_SETTLED",
+    "true_category": "PARTIAL_PAYMENT",
+    "expected_difference": -1336,
     "affected_records": [
       "ORD-1224",
-      "SET-20224-A",
-      "SET-20224-B"
+      "SET-20224"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1225",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 29,
+    "true_root_cause": "MISSING_REFUND_DEDUCTION",
+    "true_category": "REFUND_TIMING",
+    "expected_difference": 5760,
     "affected_records": [
       "ORD-1225",
       "SET-20225"
@@ -860,10 +1208,21 @@
   },
   {
     "exception_id": null,
+    "order_id": "ORD-1227",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 49,
+    "affected_records": [
+      "ORD-1227",
+      "SET-20227"
+    ]
+  },
+  {
+    "exception_id": null,
     "order_id": "ORD-1228",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 11865,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 457,
     "affected_records": [
       "ORD-1228",
       "SET-20228"
@@ -872,9 +1231,9 @@
   {
     "exception_id": null,
     "order_id": "ORD-1231",
-    "true_root_cause": "MISSING_REFUND_DEDUCTION",
-    "true_category": "REFUND_TIMING",
-    "expected_difference": 5796,
+    "true_root_cause": "FX_RATE_VARIANCE",
+    "true_category": "FX_ANOMALY",
+    "expected_difference": 543,
     "affected_records": [
       "ORD-1231",
       "SET-20231"
@@ -883,57 +1242,138 @@
   {
     "exception_id": null,
     "order_id": "ORD-1232",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 100,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1232",
-      "SET-20232"
+      "SET-20232-A",
+      "SET-20232-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1233",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 82,
+    "affected_records": [
+      "ORD-1233",
+      "SET-20233"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1234",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 71,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1234",
-      "SET-20234"
+      "SET-20234-A",
+      "SET-20234-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1236",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 105,
+    "affected_records": [
+      "ORD-1236",
+      "SET-20236"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1238",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 43,
+    "affected_records": [
+      "ORD-1238",
+      "SET-20238"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1246",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 92,
+    "affected_records": [
+      "ORD-1246",
+      "SET-20246"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1248",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 97,
+    "affected_records": [
+      "ORD-1248",
+      "SET-20248"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1249",
-    "true_root_cause": "SPLIT_PAYMENT",
-    "true_category": "SPLIT_SETTLEMENT_TIMING",
-    "expected_difference": 0,
+    "true_root_cause": "CHARGEBACK_RECEIVED",
+    "true_category": "CHARGEBACK",
+    "expected_difference": -5724,
     "affected_records": [
       "ORD-1249",
-      "SET-20249-A",
-      "SET-20249-B"
+      "SET-20249-CB"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1250",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 70,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1250",
-      "SET-20250"
+      "SET-20250-A",
+      "SET-20250-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1251",
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
+    "affected_records": [
+      "ORD-1251",
+      "SET-20251-A",
+      "SET-20251-B"
     ]
   },
   {
     "exception_id": null,
     "order_id": "ORD-1253",
-    "true_root_cause": "STALE_FEE_RATE",
-    "true_category": "FEE_SCHEDULE_DRIFT",
-    "expected_difference": 73,
+    "true_root_cause": "SPLIT_PAYMENT",
+    "true_category": "SPLIT_SETTLEMENT_TIMING",
+    "expected_difference": 0,
     "affected_records": [
       "ORD-1253",
-      "SET-20253"
+      "SET-20253-A",
+      "SET-20253-B"
+    ]
+  },
+  {
+    "exception_id": null,
+    "order_id": "ORD-1257",
+    "true_root_cause": "STALE_FEE_RATE",
+    "true_category": "FEE_SCHEDULE_DRIFT",
+    "expected_difference": 85,
+    "affected_records": [
+      "ORD-1257",
+      "SET-20257"
     ]
   }
 ]

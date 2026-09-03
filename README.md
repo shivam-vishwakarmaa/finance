@@ -24,10 +24,10 @@ FinEx operates through a strictly governed Pipeline:
 ## 📊 Evaluation & Metrics
 
 FinEx was tested on a synthetic dataset of 260+ orders representing systemic issues:
-- **Total Exceptions Investigated:** 59
+- **Total Exceptions Investigated:** 99
 - **Causal Correctness:** 100%
 - **False Auto-Resolution Rate:** 0.0%
-- **Books Confidence Maintained:** ~94.1%
+- **Books Confidence Maintained:** ~96.3%
 - **Unresolved Rate:** ~6.8% (Correctly flagged ambiguous cases).
 
 ## 🖥️ The UI
@@ -47,7 +47,10 @@ The FinEx frontend is built with React + Vite + Tailwind CSS.
 ### 1. Backend Setup
 ```bash
 # Install dependencies
-pip install fastapi uvicorn pandas pydantic networkx
+pip install fastapi uvicorn pandas pydantic networkx google-genai
+
+# IMPORTANT: To use the real LLM logic, you must create a .env file with your API key
+echo "GEMINI_API_KEY=your_key_here" > .env
 
 # Generate the data and run the deterministic reconciliation
 python -m scripts.generate_data

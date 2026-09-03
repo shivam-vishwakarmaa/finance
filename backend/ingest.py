@@ -59,6 +59,15 @@ def init_db():
     """)
     
     cursor.execute("""
+    CREATE TABLE resolution_rules (
+        rule_id TEXT PRIMARY KEY,
+        category TEXT,
+        max_impact REAL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    """)
+    
+    cursor.execute("""
     CREATE TABLE audit_events (
         event_id TEXT PRIMARY KEY,
         record_id TEXT,

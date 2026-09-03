@@ -53,10 +53,14 @@ def generate_dataset():
     # Isolated (ref mismatch, missing gateway, delayed settlement, etc.): 9
     
     types = (
-        ['NORMAL'] * 176 +
+        ['NORMAL'] * 136 +
         ['FEE_DRIFT'] * 35 +
         ['SPLIT_SETTLEMENT'] * 25 +
         ['REFUND_TIMING'] * 20 +
+        ['PARTIAL_PAYMENT'] * 10 +
+        ['CHARGEBACK'] * 10 +
+        ['DUPLICATE_SETTLEMENT'] * 10 +
+        ['FX_ANOMALY'] * 10 +
         ['AMBIGUOUS'] * 1 +
         ['MISSING_GATEWAY'] * 3
     )
@@ -132,6 +136,134 @@ def generate_dataset():
                     "true_category": "ISOLATED_ANOMALY",
                     "expected_difference": 0
                 })
+                
+        elif t == 'PARTIAL_PAYMENT':
+            # Missing some portion of the settlement intentionally
+            shortfall = random.randint(500, 2000)
+            net = gross_amount - fee_v2 - tax_v2 - shortfall
+            settlements.append({
+                "settlement_id": f"SET-{20000 + i}",
+                "order_id": order_id,
+                "settlement_date": settlement_date.strftime("%Y-%m-%d"),
+                "gross_amount": gross_amount,
+                "fee": fee_v2,
+                "tax": tax_v2,
+                "refund": 0,
+                "net_amount": net,
+                "marketplace": "RAZORPAY",
+                "reference": ref,
+                "rate_version": "v2"
+            })
+            ground_truth.append({
+                "exception_id": None,
+                "order_id": order_id,
+                "true_root_cause": "SHORT_SETTLED",
+                "true_category": "PARTIAL_PAYMENT",
+                "expected_difference": -shortfall,
+                "affected_records": [order_id, f"SET-{20000 + i}"]
+            })
+            
+        elif t == 'CHARGEBACK':
+            # Original settlement exists, but chargeback was deducted as a separate transaction
+            net = gross_amount - fee_v2 - tax_v2
+            settlements.append({
+                "settlement_id": f"SET-{20000 + i}",
+                "order_id": order_id,
+                "settlement_date": settlement_date.strftime("%Y-%m-%d"),
+                "gross_amount": gross_amount,
+                "fee": fee_v2,
+                "tax": tax_v2,
+                "refund": 0,
+                "net_amount": net,
+                "marketplace": "RAZORPAY",
+                "reference": ref,
+                "rate_version": "v2"
+            })
+            # Add a chargeback deduction
+            cb_amount = gross_amount
+            settlements.append({
+                "settlement_id": f"SET-{20000 + i}-CB",
+                "order_id": order_id,
+                "settlement_date": (settlement_date + timedelta(days=5)).strftime("%Y-%m-%d"),
+                "gross_amount": 0,
+                "fee": 500, # Chargeback penalty fee
+                "tax": 90,
+                "refund": 0,
+                "net_amount": -cb_amount - 500 - 90,
+                "marketplace": "RAZORPAY",
+                "reference": f"CB-{order_id}",
+                "rate_version": "v2"
+            })
+            ground_truth.append({
+                "exception_id": None,
+                "order_id": order_id,
+                "true_root_cause": "CHARGEBACK_RECEIVED",
+                "true_category": "CHARGEBACK",
+                "expected_difference": -cb_amount - 590,
+                "affected_records": [order_id, f"SET-{20000 + i}-CB"]
+            })
+            
+        elif t == 'DUPLICATE_SETTLEMENT':
+            net = gross_amount - fee_v2 - tax_v2
+            settlements.append({
+                "settlement_id": f"SET-{20000 + i}-A",
+                "order_id": order_id,
+                "settlement_date": settlement_date.strftime("%Y-%m-%d"),
+                "gross_amount": gross_amount,
+                "fee": fee_v2,
+                "tax": tax_v2,
+                "refund": 0,
+                "net_amount": net,
+                "marketplace": "RAZORPAY",
+                "reference": ref,
+                "rate_version": "v2"
+            })
+            settlements.append({
+                "settlement_id": f"SET-{20000 + i}-B",
+                "order_id": order_id,
+                "settlement_date": settlement_date.strftime("%Y-%m-%d"),
+                "gross_amount": gross_amount,
+                "fee": fee_v2,
+                "tax": tax_v2,
+                "refund": 0,
+                "net_amount": net,
+                "marketplace": "RAZORPAY",
+                "reference": ref,
+                "rate_version": "v2"
+            })
+            ground_truth.append({
+                "exception_id": None,
+                "order_id": order_id,
+                "true_root_cause": "SETTLED_TWICE",
+                "true_category": "DUPLICATE_SETTLEMENT",
+                "expected_difference": net,
+                "affected_records": [order_id, f"SET-{20000 + i}-B"]
+            })
+            
+        elif t == 'FX_ANOMALY':
+            fx_rate = 1.05 # 5% unexpected currency variance
+            net = (gross_amount - fee_v2 - tax_v2) * fx_rate
+            settlements.append({
+                "settlement_id": f"SET-{20000 + i}",
+                "order_id": order_id,
+                "settlement_date": settlement_date.strftime("%Y-%m-%d"),
+                "gross_amount": gross_amount,
+                "fee": fee_v2,
+                "tax": tax_v2,
+                "refund": 0,
+                "net_amount": round(net),
+                "marketplace": "RAZORPAY",
+                "reference": ref,
+                "rate_version": "v2"
+            })
+            ground_truth.append({
+                "exception_id": None,
+                "order_id": order_id,
+                "true_root_cause": "FX_RATE_VARIANCE",
+                "true_category": "FX_ANOMALY",
+                "expected_difference": round(net) - (gross_amount - fee_v2 - tax_v2),
+                "affected_records": [order_id, f"SET-{20000 + i}"]
+            })
                 
         elif t == 'FEE_DRIFT':
             # Settlement applied v1 fees incorrectly in July 2026
