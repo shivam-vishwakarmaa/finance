@@ -253,7 +253,7 @@ function App() {
                 Deterministic Verification
               </h2>
               {ev && ev.verification ? (
-                <div className="space-y-0 font-mono text-sm bg-[#050b14] rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden">
+                <div className="space-y-0 font-mono text-sm bg-white dark:bg-[#050b14] rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden">
                    <div className="flex justify-between p-4 border-b border-slate-200 dark:border-white/5">
                       <span className="text-slate-600 dark:text-slate-400">Expected Internal Books</span> 
                       <span className="text-slate-900 dark:text-white">{formatCurrency(ev.verification.expected)}</span>
@@ -300,9 +300,9 @@ function App() {
             </div>
 
             <div className={`p-8 rounded-3xl border relative overflow-hidden
-               ${status === 'HUMAN_APPROVAL' ? 'bg-gradient-to-br from-[#1e1b4b] to-[#0f172a] border-primary/30' : 
-                 status === 'SAFE_AUTO_RESOLUTION' ? 'bg-gradient-to-br from-[#064e3b] to-[#0f172a] border-success/30' : 
-                 'bg-gradient-to-br from-[#450a0a] to-[#0f172a] border-danger/30'}`}>
+               ${status === 'HUMAN_APPROVAL' ? 'bg-gradient-to-br from-indigo-100 to-white dark:from-[#1e1b4b] dark:to-[#0f172a] border-primary/30' : 
+                 status === 'SAFE_AUTO_RESOLUTION' ? 'bg-gradient-to-br from-emerald-100 to-white dark:from-[#064e3b] dark:to-[#0f172a] border-success/30' : 
+                 'bg-gradient-to-br from-red-100 to-white dark:from-[#450a0a] dark:to-[#0f172a] border-danger/30'}`}>
                <h2 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">Governance Engine</h2>
                <p className="text-sm text-slate-700 dark:text-slate-300 opacity-80 mb-6">Execution strictly controlled by materiality & confidence thresholds.</p>
                
