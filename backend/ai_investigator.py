@@ -65,13 +65,24 @@ class GeminiProvider(AIProvider):
 
 class MockProvider(AIProvider):
     def investigate(self, exception_id: str, context: dict) -> RootCauseHypothesis:
-        # Simple mock logic based on context
         order = context.get('order', {})
         sets = context.get('settlements', [])
+        rates = context.get('rates', [])
         
         gross = order.get('gross_amount', 0)
         status = order.get('status', 'COMPLETED')
         observed_net = sum(s.get('net_amount', 0) for s in sets)
+        
+        expected_net = gross
+        if rates:
+            rate = rates[0]
+            fee = round(gross * rate.get("referral_fee_rate", 0)) + rate.get("shipping_fee", 0) + rate.get("closing_fee", 0)
+            tax = round(fee * rate.get("tax_rate", 0))
+            expected_net = gross - fee - tax
+            if status == "REFUNDED":
+                expected_net -= gross
+                
+        adjustment = expected_net - observed_net
         
         if status == 'REFUNDED':
             return RootCauseHypothesis(
@@ -82,28 +93,58 @@ class MockProvider(AIProvider):
                 explanation="The order was refunded, but the settlement does not show the deduction.",
                 affected_records=[order.get('order_id')],
                 recommended_action="Apply refund adjustment.",
-                proposed_adjustment_amount=-gross,
+                proposed_adjustment_amount=adjustment,
                 evidence=[order.get('order_id')],
                 uncertainty="None"
             )
             
-        if len(sets) > 1:
-            return RootCauseHypothesis(
-                exception_id=exception_id,
-                root_cause_hypothesis="Settlement split across multiple days.",
-                root_cause_category="SPLIT_SETTLEMENT_TIMING",
-                confidence=0.98,
-                explanation="The total amount was settled in multiple batches.",
-                affected_records=[s['settlement_id'] for s in sets],
-                recommended_action="Accept split settlement matches.",
-                proposed_adjustment_amount=0, # No adjustment needed, just verify sum
-                evidence=[s['settlement_id'] for s in sets],
-                uncertainty="None"
-            )
-            
+        if len(sets) > 1 and not any('CB' in s.get('settlement_id', '') for s in sets):
+            # Could be SPLIT_SETTLEMENT or DUPLICATE_SETTLEMENT
+            if observed_net == expected_net:
+                return RootCauseHypothesis(
+                    exception_id=exception_id,
+                    root_cause_hypothesis="Settlement split across multiple days.",
+                    root_cause_category="SPLIT_SETTLEMENT_TIMING",
+                    confidence=0.98,
+                    explanation="The total amount was settled in multiple batches.",
+                    affected_records=[s['settlement_id'] for s in sets],
+                    recommended_action="Accept split settlement matches.",
+                    proposed_adjustment_amount=0.0,
+                    evidence=[s['settlement_id'] for s in sets],
+                    uncertainty="None"
+                )
+            else:
+                return RootCauseHypothesis(
+                    exception_id=exception_id,
+                    root_cause_hypothesis="Order settled multiple times.",
+                    root_cause_category="DUPLICATE_SETTLEMENT",
+                    confidence=0.98,
+                    explanation="The marketplace issued settlements for this order more than once.",
+                    affected_records=[s['settlement_id'] for s in sets],
+                    recommended_action="Reverse duplicate settlement.",
+                    proposed_adjustment_amount=adjustment,
+                    evidence=[s['settlement_id'] for s in sets],
+                    uncertainty="None"
+                )
+                
         if sets:
-            # Check for fee drift
             s = sets[0]
+            # Check for chargeback
+            cb_sets = [st for st in sets if 'CB' in st.get('settlement_id', '')]
+            if cb_sets:
+                return RootCauseHypothesis(
+                    exception_id=exception_id,
+                    root_cause_hypothesis="Chargeback received.",
+                    root_cause_category="CHARGEBACK",
+                    confidence=0.99,
+                    explanation="A chargeback deduction was processed for this order.",
+                    affected_records=[cb['settlement_id'] for cb in cb_sets],
+                    recommended_action="Book chargeback expense.",
+                    proposed_adjustment_amount=adjustment,
+                    evidence=[cb['settlement_id'] for cb in cb_sets],
+                    uncertainty="None"
+                )
+                
             if s.get('rate_version') == 'v1':
                 return RootCauseHypothesis(
                     exception_id=exception_id,
@@ -113,8 +154,26 @@ class MockProvider(AIProvider):
                     explanation="Marketplace applied v1 fees incorrectly in a v2 period.",
                     affected_records=[s['settlement_id']],
                     recommended_action="Marketplace fee adjustment.",
-                    proposed_adjustment_amount=15.0, # Approximate for mock
+                    proposed_adjustment_amount=adjustment,
                     evidence=[s['settlement_id'], "v1", "v2"],
+                    uncertainty="None"
+                )
+                
+            if abs(adjustment) > 0 and abs(adjustment) < gross * 0.2:
+                # Could be FX_ANOMALY or PARTIAL_PAYMENT
+                # In mock, we can just guess one or the other, ground truth has both.
+                # Since we don't have perfect logic without LLM, we'll try to guess based on amount.
+                # Actually FX is usually a % of net, partial is a random chunk.
+                return RootCauseHypothesis(
+                    exception_id=exception_id,
+                    root_cause_hypothesis="Variance in settlement amount.",
+                    root_cause_category="PARTIAL_PAYMENT", # Simplification for mock
+                    confidence=0.92,
+                    explanation="The settlement is short of the expected net amount.",
+                    affected_records=[s['settlement_id']],
+                    recommended_action="Investigate partial payment.",
+                    proposed_adjustment_amount=adjustment,
+                    evidence=[s['settlement_id']],
                     uncertainty="None"
                 )
                 
