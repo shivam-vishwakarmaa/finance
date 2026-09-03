@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,14 +8,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'sans-serif'],
+        sans: ['Lato', 'sans-serif'],
+        heading: ['Satoshi', 'sans-serif'],
       },
       colors: {
-        background: '#030712', // Ultra dark blue/black
-        surface: '#0f172a',
+        background: 'var(--bg-color)', 
+        surface: 'var(--surface-color)', 
         primary: {
-          DEFAULT: '#6366f1', // Indigo
-          glow: 'rgba(99, 102, 241, 0.5)'
+          DEFAULT: '#1A56DB', // Razorpay Blue
+          glow: 'rgba(26, 86, 219, 0.4)'
         },
         success: {
           DEFAULT: '#10b981',
