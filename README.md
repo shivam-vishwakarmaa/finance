@@ -23,12 +23,17 @@ FinEx operates through a strictly governed Pipeline:
 
 ## 📊 Evaluation & Metrics
 
-FinEx was tested on a synthetic dataset of 260+ orders representing systemic issues:
+FinEx was tested on a synthetic dataset of 260+ orders. The following are the **measured synthetic-data results under Mock/LLM-provider conditions**:
 - **Total Exceptions Investigated:** 99
-- **Causal Correctness:** 85.8% (Mock Baseline)
-- **False Auto-Resolution Rate:** 0.0%
-- **Books Confidence Maintained:** ~62.9%
-- **Unresolved Rate:** ~6.8% (Correctly flagged ambiguous cases).
+- **Total Financial Impact:** ₹416,803
+- **Causal Correctness:** 85.8586%
+- **Mathematical Correctness:** 94.9495%
+- **Resolution Correctness:** 53.5354%
+- **False Auto-Resolution Rate:** 0%
+- **Unresolved Rate:** 8.0808%
+- **Books Confidence:** 62.9155%
+- **Proven Value:** ₹1,243,909
+- **Unresolved Value:** ₹115,630
 
 ## 🖥️ The UI
 
