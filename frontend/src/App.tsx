@@ -4,7 +4,9 @@ import { Moon, Sun, Activity, AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2
 
 function App() {
   const [currentView, setCurrentView] = useState<string>('dashboard')
-  const [isDark, setIsDark] = useState<boolean>(true)
+  const [isDark, setIsDark] = useState<boolean>(
+    () => localStorage.getItem('finex-theme') !== 'light'
+  )
   const [selectedException, setSelectedException] = useState<any>(null)
   const [selectedCluster, setSelectedCluster] = useState<any>(null)
   
@@ -14,8 +16,13 @@ function App() {
   const [auditEvents, setAuditEvents] = useState<any[]>([])
   
   useEffect(() => {
-    if (isDark) document.documentElement.classList.add('dark')
-    else document.documentElement.classList.remove('dark')
+    if (isDark) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('finex-theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('finex-theme', 'light')
+    }
   }, [isDark])
 
   useEffect(() => {
@@ -75,7 +82,7 @@ function App() {
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><ShieldCheck className="w-20 h-20 text-success"/></div>
             <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2 flex items-center gap-2"><Activity className="w-4 h-4 text-success"/> Books Confidence</p>
             <p className="text-4xl font-bold text-slate-900 dark:text-white">{(dashboardData.books_confidence * 100).toFixed(1)}%</p>
-            <div className="mt-4 h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div className="mt-4 h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                <div className="h-full bg-success rounded-full" style={{ width: `${dashboardData.books_confidence * 100}%` }}></div>
             </div>
           </div>
@@ -115,7 +122,7 @@ function App() {
                 className="glass-card p-5 rounded-2xl hover:border-primary/50 cursor-pointer transition-all duration-300 hover:shadow-[0_0_20px_rgba(26,86,219,0.15)] group flex items-center justify-between"
                 style={{ animationDelay: `${0.4 + (i * 0.1)}s` }}>
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 group-hover:bg-primary/20 group-hover:text-primary group-hover:border-primary/50 transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 group-hover:bg-primary/20 group-hover:text-primary group-hover:border-primary/50 transition-colors">
                     {i + 1}
                   </div>
                   <div>
@@ -253,7 +260,7 @@ function App() {
                 Deterministic Verification
               </h2>
               {ev && ev.verification ? (
-                <div className="space-y-0 font-mono text-sm bg-white dark:bg-[#050b14] rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden">
+                <div className="space-y-0 font-mono text-sm bg-slate-50 dark:bg-[#050b14] rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden">
                    <div className="flex justify-between p-4 border-b border-slate-200 dark:border-white/5">
                       <span className="text-slate-600 dark:text-slate-400">Expected Internal Books</span> 
                       <span className="text-slate-900 dark:text-white">{formatCurrency(ev.verification.expected)}</span>
@@ -384,7 +391,7 @@ function App() {
                     <th className="p-5 font-semibold text-slate-700 dark:text-slate-300 text-center">Engine Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-slate-200 dark:divide-white/5">
                   {selectedCluster.exceptions.map((e: any) => (
                     <tr key={e.exception_id} className="hover:bg-slate-100 dark:bg-white/5 cursor-pointer transition-colors group" onClick={() => navigateToException(e.exception_id)}>
                       <td className="p-5 font-medium text-slate-900 dark:text-white group-hover:text-primary transition-colors">{e.exception_id}</td>
@@ -436,7 +443,7 @@ function App() {
                 <th className="p-5 font-semibold text-slate-700 dark:text-slate-300">Hash (SHA-256)</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200 dark:divide-white/5">
               {auditEvents.map((e: any) => (
                 <tr key={e.event_id} className="hover:bg-slate-100 dark:bg-white/5 transition-colors">
                   <td className="p-5 text-slate-600 dark:text-slate-400 text-xs font-mono">{new Date(e.created_at).toLocaleString()}</td>
@@ -481,7 +488,7 @@ function App() {
              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center text-slate-900 dark:text-white shadow-[0_0_15px_rgba(26,86,219,0.5)] group-hover:shadow-[0_0_25px_rgba(26,86,219,0.7)] transition-all duration-300">
                <Activity className="w-6 h-6" />
              </div>
-             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">FinEx</span>
+             <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-500 dark:from-white dark:to-slate-400">FinEx</span>
            </div>
            
            <nav className="flex items-center gap-6">
