@@ -48,8 +48,17 @@ def get_dashboard():
     orders_df = pd.read_sql("SELECT SUM(gross_amount) as total FROM orders", conn)
     
     total_value = float(orders_df.iloc[0]['total']) if not orders_df.empty else 0.0
+    
+    matches_df = pd.read_sql("SELECT order_id FROM matches", conn)
+    orders_full = pd.read_sql("SELECT order_id, gross_amount FROM orders", conn)
+    matched_orders = orders_full[orders_full['order_id'].isin(matches_df['order_id'])]
+    matched_value = float(matched_orders['gross_amount'].sum()) if not matched_orders.empty else 0.0
+    
+    resolved_exceptions = exceptions_df[exceptions_df['status'].isin(['SAFE_AUTO_RESOLUTION', 'HUMAN_APPROVED'])]
+    resolved_value = float(resolved_exceptions['financial_impact'].sum()) if not resolved_exceptions.empty else 0.0
+    
+    proven_value = matched_value + resolved_value
     unresolved_value = float(exceptions_df[exceptions_df['status'] == 'UNRESOLVED']['financial_impact'].sum()) if not exceptions_df.empty else 0.0
-    proven_value = total_value - unresolved_value
     
     conn.close()
     

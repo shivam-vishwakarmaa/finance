@@ -50,24 +50,30 @@ def evaluate_batch():
             if pred_cat == true_cat:
                 correct_causes += 1
                 
-            # False auto-resolution (if status is SAFE_AUTO_RESOLUTION but it was actually ambiguous or wrong)
-            if status == 'SAFE_AUTO_RESOLUTION' and pred_cat != true_cat:
+            # Parse evidence package for verification status
+            ev = exc['evidence_package']
+            math_pass = False
+            if ev:
+                try:
+                    ev_data = json.loads(ev)
+                    if ev_data.get('verification', {}).get('status') == 'PASS':
+                        verified_count += 1
+                        math_pass = True
+                except:
+                    pass
+
+            # Resolution correctness
+            is_ambiguous = true_cat in ['AMBIGUOUS', 'ISOLATED_ANOMALY']
+            if is_ambiguous and status == 'UNRESOLVED':
+                correct_resolutions += 1
+            elif not is_ambiguous and status in ['SAFE_AUTO_RESOLUTION', 'HUMAN_APPROVED'] and pred_cat == true_cat and math_pass:
+                correct_resolutions += 1
+
+            # False auto-resolution
+            if status == 'SAFE_AUTO_RESOLUTION' and (pred_cat != true_cat or not math_pass):
                 false_autos += 1
                 
-            # Resolution correctness (status is resolved and it's correct)
-            if status in ['SAFE_AUTO_RESOLUTION', 'HUMAN_APPROVAL'] and pred_cat == true_cat:
-                correct_resolutions += 1
-                
-        # Parse evidence package for verification status
-        ev = exc['evidence_package']
-        if ev:
-            try:
-                ev_data = json.loads(ev)
-                if ev_data.get('verification', {}).get('status') == 'PASS':
-                    verified_count += 1
-            except:
-                pass
-                
+
     if total_exceptions > 0:
         metrics["causal_correctness"] = correct_causes / total_exceptions
         metrics["resolution_correctness"] = correct_resolutions / total_exceptions
@@ -75,19 +81,27 @@ def evaluate_batch():
         metrics["unresolved_rate"] = unresolved_count / total_exceptions
         metrics["mathematical_correctness"] = verified_count / total_exceptions
         
-    # Books confidence = value of (matched + accurately resolved) / total value
-    # We can approximate for now as matched value / total gross + verified exception value
-    orders = pd.read_sql("SELECT SUM(gross_amount) as total FROM orders", conn)
-    total_value = orders.iloc[0]['total']
+    # Books Confidence = (Value of exact matches + Value of safely resolved exceptions) / Total Gross
+    # 1. Total Gross
+    orders = pd.read_sql("SELECT order_id, gross_amount FROM orders", conn)
+    total_value = orders['gross_amount'].sum() if not orders.empty else 0
     
-    # Value under investigation/unresolved
+    # 2. Matches Value
+    matches = pd.read_sql("SELECT order_id FROM matches", conn)
+    matched_orders = orders[orders['order_id'].isin(matches['order_id'])]
+    matched_value = matched_orders['gross_amount'].sum() if not matched_orders.empty else 0
+    
+    # 3. Resolved Exceptions Value
+    resolved_exceptions = exceptions[exceptions['status'].isin(['SAFE_AUTO_RESOLUTION', 'HUMAN_APPROVED'])]
+    resolved_value = resolved_exceptions['financial_impact'].sum() if not resolved_exceptions.empty else 0
+    
+    proven_value = matched_value + resolved_value
     unresolved_value = exceptions[exceptions['status'] == 'UNRESOLVED']['financial_impact'].sum() if not exceptions.empty else 0
     
-    proven_value = total_value - unresolved_value
     metrics["books_confidence"] = proven_value / total_value if total_value else 1.0
-    metrics["proven_value"] = proven_value
-    metrics["unresolved_value"] = unresolved_value
-
+    metrics["proven_value"] = float(proven_value)
+    metrics["unresolved_value"] = float(unresolved_value)
+    
     conn.close()
     return metrics
 
