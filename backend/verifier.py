@@ -43,6 +43,7 @@ def verify_adjustment(order_id, proposed_adjustment_amount):
         "status": status,
         "expected": float(expected_net),
         "observed": float(observed_net),
+        "adjustment": float(proposed_adjustment_amount),
         "difference": float(expected_net - observed_net),
         "calculation": f"{float(observed_net)} + {float(proposed_adjustment_amount)} = {float(adjusted_observed_net)} (Expected: {float(expected_net)})",
         "reason": f"Verification {'passed' if is_verified else 'failed'} with adjustment {float(proposed_adjustment_amount)}"
