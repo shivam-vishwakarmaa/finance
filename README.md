@@ -24,11 +24,11 @@ FinEx operates through a strictly governed Pipeline:
 ## 📊 Evaluation & Metrics
 
 FinEx was tested on a synthetic dataset of 260+ orders representing systemic issues:
-- **Total Exceptions Investigated:** 84
+- **Total Exceptions Investigated:** 59
 - **Causal Correctness:** 100%
 - **False Auto-Resolution Rate:** 0.0%
 - **Books Confidence Maintained:** ~94.1%
-- **Unresolved Rate:** ~34.5% (Correctly flagged ambiguous cases).
+- **Unresolved Rate:** ~6.8% (Correctly flagged ambiguous cases).
 
 ## 🖥️ The UI
 

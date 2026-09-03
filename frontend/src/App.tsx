@@ -157,6 +157,18 @@ function App() {
     if (!selectedException) return null
     const { exception_id, order_id, financial_impact, status, evidence_package: ev } = selectedException
     
+    const handleAction = (action: 'approve' | 'reject') => {
+      fetch(`http://localhost:8000/api/exceptions/${exception_id}/${action}`, { method: 'POST' })
+        .then(r => r.json())
+        .then(() => {
+          const newStatus = action === 'approve' ? 'HUMAN_APPROVED' : 'UNRESOLVED'
+          setSelectedException({...selectedException, status: newStatus})
+          setExceptions(exceptions.map(e => e.exception_id === exception_id ? {...e, status: newStatus} : e))
+          // Refresh dashboard stats
+          fetch('http://localhost:8000/api/dashboard').then(r => r.json()).then(data => setDashboardData(data))
+        })
+    }
+    
     return (
       <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-8 animate-slide-up relative z-10">
         <button onClick={() => setCurrentView('dashboard')} className="flex items-center text-slate-400 hover:text-white transition-colors group">
@@ -285,20 +297,20 @@ function App() {
                
                {status === 'HUMAN_APPROVAL' ? (
                  <div className="space-y-3 relative z-10">
-                   <button className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all flex items-center justify-center gap-2">
+                   <button onClick={() => handleAction('approve')} className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all flex items-center justify-center gap-2">
                      <CheckCircle2 className="w-4 h-4"/> Approve Adjustment
                    </button>
-                   <button className="w-full py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium transition-all">
+                   <button onClick={() => handleAction('reject')} className="w-full py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium transition-all">
                      Flag as Unresolved
                    </button>
                  </div>
-               ) : status === 'SAFE_AUTO_RESOLUTION' ? (
+               ) : status === 'SAFE_AUTO_RESOLUTION' || status === 'HUMAN_APPROVED' ? (
                  <div className="flex flex-col items-center justify-center text-center p-6 bg-black/20 rounded-2xl border border-success/20">
                     <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center mb-3">
                       <ShieldCheck className="w-6 h-6 text-success" />
                     </div>
-                    <p className="text-success font-bold text-lg mb-1">Safely Auto-Resolved</p>
-                    <p className="text-xs text-slate-300">Adjustment applied to ledger automatically.</p>
+                    <p className="text-success font-bold text-lg mb-1">{status === 'HUMAN_APPROVED' ? 'Human Approved' : 'Safely Auto-Resolved'}</p>
+                    <p className="text-xs text-slate-300">Adjustment applied to ledger.</p>
                  </div>
                ) : (
                  <div className="flex flex-col items-center justify-center text-center p-6 bg-black/20 rounded-2xl border border-danger/20">

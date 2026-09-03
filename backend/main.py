@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 import pandas as pd
 import json
-
+import hashlib
+from datetime import datetime
 app = FastAPI(title="FinEx Controller API")
 
 app.add_middleware(
@@ -20,6 +21,24 @@ def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+def insert_audit_event(record_id: str, stage: str, action: str, reason: str, confidence: float, verification_result: str, approval_status: str):
+    import uuid
+    conn = get_db_connection()
+    timestamp = datetime.utcnow().isoformat() + "Z"
+    event_id = f"EVT-{uuid.uuid4().hex[:8].upper()}"
+    
+    # Hash for basic immutability tracing
+    hash_input = f"{timestamp}|{record_id}|{action}|{reason}".encode('utf-8')
+    record_hash = hashlib.sha256(hash_input).hexdigest()
+    
+    conn.execute('''
+        INSERT INTO audit_events 
+        (event_id, created_at, record_id, stage, action, reason, confidence, verification_result, approval_status, record_hash)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (event_id, timestamp, record_id, stage, action, reason, confidence, verification_result, approval_status, record_hash))
+    conn.commit()
+    conn.close()
 
 @app.get("/api/dashboard")
 def get_dashboard():
@@ -91,10 +110,55 @@ def get_exception(exception_id: str):
 @app.post("/api/exceptions/{exception_id}/approve")
 def approve_exception(exception_id: str):
     conn = get_db_connection()
+    exc = conn.execute("SELECT * FROM exceptions WHERE exception_id = ?", (exception_id,)).fetchone()
+    if not exc:
+        raise HTTPException(status_code=404, detail="Exception not found")
+        
     conn.execute("UPDATE exceptions SET status = 'HUMAN_APPROVED' WHERE exception_id = ?", (exception_id,))
     conn.commit()
     conn.close()
+    
+    insert_audit_event(
+        record_id=exception_id,
+        stage="GOVERNANCE",
+        action="APPROVE_ADJUSTMENT",
+        reason="Human controller explicitly approved the AI proposed adjustment.",
+        confidence=exc['confidence'],
+        verification_result="PASS",
+        approval_status="HUMAN_APPROVED"
+    )
+    
     return {"status": "success", "message": f"Exception {exception_id} approved."}
+
+@app.post("/api/exceptions/{exception_id}/reject")
+def reject_exception(exception_id: str):
+    conn = get_db_connection()
+    exc = conn.execute("SELECT * FROM exceptions WHERE exception_id = ?", (exception_id,)).fetchone()
+    if not exc:
+        raise HTTPException(status_code=404, detail="Exception not found")
+        
+    conn.execute("UPDATE exceptions SET status = 'UNRESOLVED' WHERE exception_id = ?", (exception_id,))
+    conn.commit()
+    conn.close()
+    
+    insert_audit_event(
+        record_id=exception_id,
+        stage="GOVERNANCE",
+        action="REJECT_ADJUSTMENT",
+        reason="Human controller flagged the exception as unresolved.",
+        confidence=exc['confidence'],
+        verification_result="UNKNOWN",
+        approval_status="UNRESOLVED"
+    )
+    
+    return {"status": "success", "message": f"Exception {exception_id} flagged as unresolved."}
+
+@app.get("/api/audit")
+def get_audit_trail():
+    conn = get_db_connection()
+    events = conn.execute("SELECT * FROM audit_events ORDER BY created_at DESC LIMIT 100").fetchall()
+    conn.close()
+    return [dict(e) for e in events]
 
 @app.get("/api/evaluation")
 def get_evaluation():

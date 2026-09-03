@@ -20,6 +20,49 @@ class AIProvider:
     def investigate(self, exception_id: str, context: dict) -> RootCauseHypothesis:
         raise NotImplementedError
 
+class GeminiProvider(AIProvider):
+    def __init__(self):
+        try:
+            from google import genai
+            from google.genai import types
+            api_key = os.environ.get("GEMINI_API_KEY")
+            if not api_key:
+                raise ValueError("GEMINI_API_KEY environment variable not set")
+            self.client = genai.Client(api_key=api_key)
+            self.types = types
+        except ImportError:
+            raise ImportError("Please install google-genai to use GeminiProvider")
+
+    def investigate(self, exception_id: str, context: dict) -> RootCauseHypothesis:
+        prompt = f"""
+        You are FinEx, an expert AI Finance Controller.
+        Analyze the following financial discrepancy context and propose a root cause hypothesis.
+
+        Exception ID: {exception_id}
+        
+        Context Data (JSON):
+        {json.dumps(context, indent=2)}
+        
+        Instructions:
+        1. Identify why the expected net amount does not match the observed settlement(s).
+        2. Categorize the root cause (e.g., FEE_SCHEDULE_DRIFT, SPLIT_SETTLEMENT_TIMING, REFUND_TIMING, AMBIGUOUS).
+        3. Determine the EXACT proposed adjustment amount needed to reconcile the books. For split settlements where the sum equals the order net, the adjustment is 0. For fee drift, it is the difference between the expected and observed fee.
+        4. List the exact record IDs (orders, settlements, etc.) that provide evidence.
+        """
+        
+        response = self.client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=self.types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema=RootCauseHypothesis,
+                temperature=0.1
+            )
+        )
+        
+        # Pydantic validation handles parsing
+        return RootCauseHypothesis.model_validate_json(response.text)
+
 class MockProvider(AIProvider):
     def investigate(self, exception_id: str, context: dict) -> RootCauseHypothesis:
         # Simple mock logic based on context
@@ -105,7 +148,15 @@ class MockProvider(AIProvider):
 
 def investigate_exception(exception_id: str, context: dict, provider: AIProvider = None):
     if provider is None:
-        provider = MockProvider()
+        if os.environ.get("GEMINI_API_KEY"):
+            try:
+                provider = GeminiProvider()
+            except Exception as e:
+                print(f"Failed to initialize GeminiProvider: {e}")
+                provider = MockProvider()
+        else:
+            print("GEMINI_API_KEY not found. Using MockProvider.")
+            provider = MockProvider()
         
     try:
         result = provider.investigate(exception_id, context)
@@ -118,7 +169,7 @@ def investigate_exception(exception_id: str, context: dict, provider: AIProvider
             "root_cause_hypothesis": "AI investigation unavailable — deterministic evidence available.",
             "root_cause_category": "AI_FAILURE",
             "confidence": 0.0,
-            "explanation": "The AI investigation service encountered an error or timed out.",
+            "explanation": f"The AI investigation service encountered an error: {str(e)}",
             "affected_records": [],
             "recommended_action": "Manual review or retry.",
             "proposed_adjustment_amount": 0.0,

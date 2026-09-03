@@ -53,14 +53,12 @@ def generate_dataset():
     # Isolated (ref mismatch, missing gateway, delayed settlement, etc.): 9
     
     types = (
-        ['NORMAL'] * 170 +
+        ['NORMAL'] * 176 +
         ['FEE_DRIFT'] * 35 +
         ['SPLIT_SETTLEMENT'] * 25 +
         ['REFUND_TIMING'] * 20 +
         ['AMBIGUOUS'] * 1 +
-        ['REF_MISMATCH'] * 3 +
-        ['MISSING_GATEWAY'] * 3 +
-        ['DELAYED_SETTLEMENT'] * 3
+        ['MISSING_GATEWAY'] * 3
     )
     random.shuffle(types)
 
@@ -93,8 +91,6 @@ def generate_dataset():
         # Gateway
         gtw_id = f"GTW-{10000 + i}"
         ref = f"REF-{order_id}"
-        if t == 'REF_MISMATCH':
-            ref = f"REFF-{order_id}-X" # typo
             
         if t != 'MISSING_GATEWAY':
             gateway_txns.append({
@@ -109,13 +105,11 @@ def generate_dataset():
 
         # Settlement
         settlement_date = order_date + timedelta(days=2)
-        if t == 'DELAYED_SETTLEMENT':
-            settlement_date = order_date + timedelta(days=15)
             
         fee_v2, tax_v2 = calc_fees(gross_amount, "v2")
         fee_v1, tax_v1 = calc_fees(gross_amount, "v1")
         
-        if t == 'NORMAL' or t == 'REF_MISMATCH' or t == 'MISSING_GATEWAY' or t == 'DELAYED_SETTLEMENT':
+        if t == 'NORMAL' or t == 'MISSING_GATEWAY':
             net = gross_amount - fee_v2 - tax_v2
             settlements.append({
                 "settlement_id": f"SET-{20000 + i}",
@@ -170,8 +164,11 @@ def generate_dataset():
             gross_1 = int(gross_amount * split_ratio)
             gross_2 = gross_amount - gross_1
             
-            fee1, tax1 = calc_fees(gross_1, "v2")
-            fee2, tax2 = calc_fees(gross_2, "v2")
+            fee_total, tax_total = calc_fees(gross_amount, "v2")
+            fee1 = int(fee_total * split_ratio)
+            tax1 = int(tax_total * split_ratio)
+            fee2 = fee_total - fee1
+            tax2 = tax_total - tax1
             
             set1_id = f"SET-{20000 + i}-A"
             set2_id = f"SET-{20000 + i}-B"

@@ -32,7 +32,7 @@ def run_investigations():
         
     exceptions = pd.read_sql("SELECT * FROM exceptions WHERE status = 'UNRESOLVED'", conn)
     
-    provider = MockProvider()
+    provider = None
     
     for _, exc in exceptions.iterrows():
         exc_id = exc['exception_id']
