@@ -1,13 +1,26 @@
 import json
 import os
 import random
+import time
 from pydantic import BaseModel, ValidationError
-from typing import List, Optional
+from typing import List, Optional, Literal
+
+RootCauseCategory = Literal[
+    "FEE_SCHEDULE_DRIFT",
+    "SPLIT_SETTLEMENT_TIMING",
+    "DUPLICATE_SETTLEMENT",
+    "REFUND_TIMING",
+    "PARTIAL_PAYMENT",
+    "CHARGEBACK",
+    "FX_ANOMALY",
+    "AMBIGUOUS",
+    "ISOLATED_ANOMALY",
+]
 
 class RootCauseHypothesis(BaseModel):
     exception_id: str
     root_cause_hypothesis: str
-    root_cause_category: str
+    root_cause_category: RootCauseCategory
     confidence: float
     explanation: str
     affected_records: List[str]
@@ -205,7 +218,7 @@ class MockProvider(AIProvider):
             uncertainty="Unknown error type."
         )
 
-def investigate_exception(exception_id: str, context: dict, provider: AIProvider = None):
+def investigate_exception(exception_id: str, context: dict, provider: AIProvider = None, max_retries: int = 4, base_delay: float = 15.0):
     if provider is None:
         if os.environ.get("GEMINI_API_KEY"):
             try:
@@ -216,22 +229,33 @@ def investigate_exception(exception_id: str, context: dict, provider: AIProvider
         else:
             print("GEMINI_API_KEY not found. Using MockProvider.")
             provider = MockProvider()
-        
-    try:
-        result = provider.investigate(exception_id, context)
-        return result.model_dump()
-    except Exception as e:
-        # Fallback safe response
-        print(f"AI investigation failed for {exception_id}: {e}")
-        return {
-            "exception_id": exception_id,
-            "root_cause_hypothesis": "AI investigation unavailable — deterministic evidence available.",
-            "root_cause_category": "AI_FAILURE",
-            "confidence": 0.0,
-            "explanation": f"The AI investigation service encountered an error: {str(e)}",
-            "affected_records": [],
-            "recommended_action": "Manual review or retry.",
-            "proposed_adjustment_amount": 0.0,
-            "evidence": [],
-            "uncertainty": "Complete uncertainty due to service failure."
-        }
+
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            result = provider.investigate(exception_id, context)
+            return result.model_dump()
+        except Exception as e:
+            last_error = e
+            msg = str(e)
+            is_rate_limit = "429" in msg or "RESOURCE_EXHAUSTED" in msg or "quota" in msg.lower()
+            if is_rate_limit and attempt < max_retries - 1:
+                wait = base_delay * (attempt + 1)
+                print(f"Rate limited on {exception_id} (attempt {attempt+1}/{max_retries}). Waiting {wait:.0f}s...")
+                time.sleep(wait)
+                continue
+            break
+
+    print(f"AI investigation failed for {exception_id}: {last_error}")
+    return {
+        "exception_id": exception_id,
+        "root_cause_hypothesis": "AI investigation unavailable — deterministic evidence available.",
+        "root_cause_category": "AI_FAILURE",
+        "confidence": 0.0,
+        "explanation": f"The AI investigation service encountered an error: {str(last_error)}",
+        "affected_records": [],
+        "recommended_action": "Manual review or retry.",
+        "proposed_adjustment_amount": 0.0,
+        "evidence": [],
+        "uncertainty": "Complete uncertainty due to service failure."
+    }
