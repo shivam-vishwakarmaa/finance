@@ -12,7 +12,9 @@ def apply_governance(ai_hypothesis, verification_result):
     status = verification_result.get('status', 'INCONCLUSIVE')
     category = ai_hypothesis.get('root_cause_category')
     
-    if status == 'PASS' and confidence >= 0.95 and impact <= 5000:
+    GLOBAL_MATERIALITY_LIMIT = 5000
+    
+    if status == 'PASS' and confidence >= 0.95 and impact <= GLOBAL_MATERIALITY_LIMIT:
         return "SAFE_AUTO_RESOLUTION"
         
     # Tier 3: Apply Rule Learning
@@ -22,8 +24,10 @@ def apply_governance(ai_hypothesis, verification_result):
             conn.row_factory = sqlite3.Row
             rule = conn.execute("SELECT * FROM resolution_rules WHERE category = ?", (category,)).fetchone()
             conn.close()
-            if rule and impact <= rule['max_impact']:
-                return "SAFE_AUTO_RESOLUTION"
+            if rule:
+                effective_threshold = min(rule['max_impact'], GLOBAL_MATERIALITY_LIMIT)
+                if impact <= effective_threshold:
+                    return "SAFE_AUTO_RESOLUTION"
         except Exception:
             pass
         
