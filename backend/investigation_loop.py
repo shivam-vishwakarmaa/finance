@@ -1,3 +1,5 @@
+import os
+import time
 import sqlite3
 import pandas as pd
 import json
@@ -33,6 +35,7 @@ def run_investigations():
     exceptions = pd.read_sql("SELECT * FROM exceptions WHERE status = 'UNRESOLVED'", conn)
     
     provider = None
+    use_real_ai = bool(os.environ.get("GEMINI_API_KEY"))
     
     for _, exc in exceptions.iterrows():
         exc_id = exc['exception_id']
@@ -65,6 +68,9 @@ def run_investigations():
             (decision, ai_result.get('confidence', 0.0), ai_result.get('root_cause_hypothesis'), ai_result.get('root_cause_category'), json.dumps(evidence, cls=NpEncoder), exc_id)
         )
         
+        if use_real_ai:
+            time.sleep(4.5)
+            
     conn.commit()
     conn.close()
     
