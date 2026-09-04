@@ -3,6 +3,7 @@ import time
 import sqlite3
 import pandas as pd
 import json
+import argparse
 import numpy as np
 from .graph import build_transaction_subgraph
 from .ai_investigator import investigate_exception, MockProvider
@@ -21,7 +22,7 @@ class NpEncoder(json.JSONEncoder):
 
 DB_PATH = "finex.db"
 
-def run_investigations():
+def run_investigations(exception_ids_file: str = None):
     conn = sqlite3.connect(DB_PATH)
     
     # Add root_cause_category column if it doesn't exist
@@ -32,7 +33,14 @@ def run_investigations():
     except sqlite3.OperationalError:
         pass
         
-    exceptions = pd.read_sql("SELECT * FROM exceptions WHERE status = 'UNRESOLVED'", conn)
+    query = "SELECT * FROM exceptions WHERE status = 'UNRESOLVED'"
+    exceptions = pd.read_sql(query, conn)
+    
+    if exception_ids_file and os.path.exists(exception_ids_file):
+        with open(exception_ids_file, 'r') as f:
+            allowed_ids = json.load(f)
+        exceptions = exceptions[exceptions['exception_id'].isin(allowed_ids)]
+        print(f"Filtering to {len(exceptions)} exceptions specified in {exception_ids_file}")
     
     provider = None
     use_real_ai = bool(os.environ.get("GEMINI_API_KEY"))
@@ -75,4 +83,7 @@ def run_investigations():
     conn.close()
     
 if __name__ == "__main__":
-    run_investigations()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--exception-ids-file", type=str, help="Path to JSON file containing exception IDs to process", default=None)
+    args = parser.parse_args()
+    run_investigations(args.exception_ids_file)
